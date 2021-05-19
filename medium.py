@@ -3,7 +3,7 @@ from functools import cmp_to_key
 
 class LargerNumKey(str):
     def __lt__(x, y):
-        return x+y > y+x
+        return x+y < y+x
 
 class Solution:
 
@@ -28,12 +28,24 @@ class Solution:
             return str(nums[0])
         else:
             nums = list(map(str, nums))
-            nums.sort(key=LargerNumKey)
+            nums.sort(key=LargerNumKey, reverse=True)
             print(nums)
-            target_number = ""
-            for i in range(len(nums)):
-                target_number += nums[i]
-            return target_number
+            # for i in range(len(nums)-1):
+            #     if int(nums[i]+nums[i+1]) < int(nums[i+1]+nums[i]):
+            #         temp = nums[i]
+            #         nums[i] = nums[i+1]
+            #         nums[i+1] = temp
+            #     else:
+            #         continue 
+            
+            # print(nums)
+            if int(nums[0]) == 0:
+                return str(0)
+            else:
+                target_number = ""
+                for i in range(len(nums)):
+                    target_number += nums[i]
+                return target_number
 
     # return a negative value (< 0) when the left item should be sorted before the right item
     # return a positive value (> 0) when the left item should be sorted after the right item
@@ -45,4 +57,4 @@ class Solution:
 
 solution = Solution()
 #print(solution.merge([[1,3],[2,6],[8,10],[15,18]]))
-print(solution.largest_number([3,30,34,5,9]))
+print(solution.largest_number([74,21,33,51,77,51,90,60,5,56]))
