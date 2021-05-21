@@ -1,7 +1,6 @@
 import java.util.*
-import kotlin.Comparator
 
-class Solution {
+class MediumSolution {
 
     /* 179. Largest Number */
     fun largestNumber(nums: IntArray): String {
@@ -31,9 +30,73 @@ class Solution {
         }
         return largestNumber
     }
+
+    /* 12. Integer to Roman */
+    fun intToRoman(num: Int): String {
+        var inputNumber = num
+        var roman = ""
+        while (inputNumber > 0) {
+            when {
+                inputNumber - 1000 >= 0 -> {
+                    roman += "M"
+                    inputNumber -= 1000
+                }
+                inputNumber - 900 >= 0 -> {
+                    roman += "CM"
+                    inputNumber -= 900
+                }
+                inputNumber - 500 >= 0 -> {
+                    roman += "D"
+                    inputNumber -= 500
+                }
+                inputNumber - 400 >= 0 -> {
+                    roman += "CD"
+                    inputNumber -= 400
+                }
+                inputNumber - 100 >= 0 -> {
+                    roman += "C"
+                    inputNumber -= 100
+                }
+                inputNumber - 90 >= 0 -> {
+                    roman += "XC"
+                    inputNumber -= 90
+                }
+                inputNumber - 50 >= 0 -> {
+                    roman += "L"
+                    inputNumber -= 50
+                }
+                inputNumber - 40 >= 0 -> {
+                    roman += "XL"
+                    inputNumber -= 40
+                }
+                inputNumber - 10 >= 0 -> {
+                    roman += "X"
+                    inputNumber -= 10
+                }
+                inputNumber - 9 >= 0 -> {
+                    roman += "IX"
+                    inputNumber -= 9
+                }
+                inputNumber - 5 >= 0 -> {
+                    roman += "V"
+                    inputNumber -= 5
+                }
+                inputNumber - 4 >= 0 -> {
+                    roman += "IV"
+                    inputNumber -= 4
+                }
+                inputNumber - 1 >= 0 -> {
+                    roman += "I"
+                    inputNumber -= 1
+                }
+            }
+        }
+        return roman
+    }
 }
 
 fun main(args: Array<String>) {
-    val solution = Solution()
-    println(solution.largestNumber(nums = intArrayOf(999999991,9)))
+    val solution = MediumSolution()
+    // println(solution.largestNumber(nums = intArrayOf(999999991,9)))
+    // println(solution.intToRoman(1994))
 }
