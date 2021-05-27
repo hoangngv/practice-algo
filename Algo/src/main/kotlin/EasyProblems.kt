@@ -1,5 +1,6 @@
 import java.util.*
-import kotlin.Comparator
+import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames
+
 
 class EasySolution {
 
@@ -119,6 +120,72 @@ class EasySolution {
 
         return stack.isEmpty()
     }
+
+    /* 27. Remove Element */
+    fun removeElement(nums: IntArray, `val`: Int): Int {
+        var i = 0
+        var length: Int = nums.size
+        while (i < length) {
+            if (nums[i] == `val`) {
+                // swap current element with the last one and remove it
+                nums[i] = nums[length-1]
+                length--
+            } else {
+                i++
+            }
+        }
+        return length
+    }
+
+    /*28. Implement strStr()*/
+    fun strStr(haystack: String, needle: String): Int {
+        if (haystack.length < needle.length) return -1
+        if (needle.isEmpty() || haystack.isEmpty()) return 0
+        if (haystack.length == needle.length) {
+            if (haystack == needle) return 0
+            return -1
+        } else {
+            for (i in 0..haystack.length-needle.length) {
+                val substring = haystack.substring(i, i+needle.length)
+                if (substring == needle) return i
+            }
+        }
+        return -1
+    }
+
+    /*35. Search Insert Position*/
+    /*Time complexity O(n)*/
+    fun searchInsert(nums: IntArray, target: Int): Int {
+        for (index in nums.indices) {
+            if (nums[index] == target) {
+                return index
+            }
+            if (nums[index] > target) {
+                return index
+            }
+        }
+        return nums.size
+    }
+
+    /* Time complexity O(logn) using Binary Search (Iterative implementation, not recursive) */
+    fun searchInsert2(nums: IntArray, target: Int): Int {
+        var leftIndex = 0
+        var rightIndex = nums.size-1
+
+        if (nums[0] > target) return 0
+        if (nums[nums.size-1] < target) return nums.size
+
+        while (leftIndex <= rightIndex) {
+            val midIndex = leftIndex + (rightIndex-leftIndex)/2 // avoid overflow
+            when {
+                nums[midIndex] == target -> return midIndex
+                nums[midIndex] < target -> leftIndex = midIndex+1
+                else -> rightIndex = midIndex-1
+            }
+            println("$leftIndex $rightIndex")
+        }
+        return leftIndex
+    }
 }
 
 fun main(args: Array<String>) {
@@ -126,5 +193,8 @@ fun main(args: Array<String>) {
     // println(solution.romanToInt("MCMXCIV"))
     // println(solution.isPalindrome(100))
     // println(solution.longestCommonPrefix(arrayOf("flower","flow","flight")))
-    println(solution.isValid("()[]{}"))
+    // println(solution.isValid("()[]{}"))
+    // println(solution.removeElement(intArrayOf(3,2,2,3), 3))
+    // println(solution.strStr("hello", "llo"))
+    println(solution.searchInsert2(intArrayOf(1,3,5,6,8,9,10), 2))
 }
