@@ -1,6 +1,5 @@
 import java.util.*
 
-
 class HardSolution {
     /* 327. Count of Range Sum */
     fun countRangeSum(nums: IntArray, lower: Int, upper: Int): Int {
@@ -18,6 +17,7 @@ class HardSolution {
         for (i in 0..numsInLong.size-1) {
             for (j in i..numsInLong.size-1) {
                 if (sumArray[j+1] >= sumArray[i]-upper && sumArray[j+1] <= sumArray[i] - lower) {
+                    println("${sumArray[j+1]}")
                     rangeSumCounter++
                 }
             }
@@ -26,49 +26,35 @@ class HardSolution {
         return rangeSumCounter
     }
 
-    fun countRangeSum2(nums: IntArray, lower: Int, upper: Int): Int {
-        val map = TreeMap<Long, Int>()
-        var sum: Long = 0
-        var count = 0
+    fun countRangeSumUsingTreeMap(nums: IntArray, lower: Int, upper: Int): Int {
+        if (nums.isEmpty()) return 0
 
-        for (element in nums) {
-            sum += element
-            if (sum in lower..upper) count++
-            count += map.subMap(sum - upper, true, sum - lower, true).values.stream()
-                .mapToInt { i: Int? ->
-                    Integer.valueOf(
-                        i!!
-                    )
-                }
-                .sum()
-            map[sum] = map.getOrDefault(sum, 0) + 1
+        val treeMap = TreeMap<Long, Int>()
+        var rangeSumCounter = 0
+        var cumulativeSum: Long = 0
+        treeMap[cumulativeSum] = 1
+
+        /* For each cumulative sum[i], we need to find all
+        the previous cumulative sum[j]'s such that sum[i]-upper<=sum[j]<=sum[i]-lower.
+        TreeMap's subMap method can achieve this. */
+        for (number in nums) {
+            cumulativeSum += number.toLong()
+
+            val subMap: Map<Long, Int> = treeMap.subMap(cumulativeSum - upper, true, cumulativeSum - lower, true)
+
+            for (value in subMap.values) {
+                rangeSumCounter += value
+            }
+
+            treeMap[cumulativeSum] = treeMap.getOrDefault(cumulativeSum, 0) + 1
         }
 
-        return count
-
-//        if (nums.isEmpty()) {
-//            return 0
-//        }
-//
-//        val tree = TreeMap<Long, Int>()
-//        tree[0L] = 1
-//
-//        var count = 0
-//        var curSum = 0L
-//        for (num in nums) {
-//            curSum += num.toLong()
-//            for (cnt in tree.subMap(curSum - upper, true, curSum - lower, true).values) {
-//                count += cnt
-//            }
-//            tree[curSum] = tree.getOrDefault(curSum, 0) + 1
-//        }
-//
-//        return count
+        return rangeSumCounter
     }
 }
 
 fun main(args: Array<String>) {
     val solution = HardSolution()
     // println(solution.countRangeSum(intArrayOf(-2, 5, -1), -2, 2))
-    println(solution.countRangeSum2(intArrayOf(-2, 5, -1), -2, 2))
+    println(solution.countRangeSumUsingTreeMap(intArrayOf(-2, 5, -1), -2, 2))
 }
