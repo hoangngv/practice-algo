@@ -1,5 +1,4 @@
 import java.util.*
-import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames
 
 
 class EasySolution {
@@ -186,15 +185,64 @@ class EasySolution {
         }
         return leftIndex
     }
+
+    /* 21. Merge Two Sorted Lists */
+    fun mergeTwoLists(l1: ListNode?, l2: ListNode?): ListNode? {
+        val mergedList = ListNode(0)
+        var current = mergedList
+        var list1 = l1
+        var list2 = l2
+
+        while (list1 != null || list2 != null) {
+            if (list1 == null) {
+                current.next = list2
+                break
+            }
+            if (list2 == null) {
+                current.next = list1
+                break
+            }
+
+            if (list1.`val` < list2.`val`) {
+                current.next = list1
+                list1 = list1.next
+            } else {
+                current.next = list2
+                list2 = list2.next
+            }
+
+            current = current.next!!
+        }
+
+        return mergedList.next
+    }
+
+    inner class ListNode(var `val`: Int) {
+        var next: ListNode? = null
+    }
+
+    /* 26. Remove Duplicates from Sorted Array */
+    fun removeDuplicates(nums: IntArray): Int {
+        if (nums.isEmpty()) return 0
+        var i = 0 // new array index
+        for (j in 1 until nums.size) {
+            if (nums[j] != nums[i]) {
+                i++
+                nums[i] = nums[j]
+            }
+        }
+        return i+1
+    }
 }
 
 fun main(args: Array<String>) {
     val solution = EasySolution()
+    println(solution.removeDuplicates(intArrayOf(0,0,1,1,1,2,2,3,3,4)))
     // println(solution.romanToInt("MCMXCIV"))
     // println(solution.isPalindrome(100))
     // println(solution.longestCommonPrefix(arrayOf("flower","flow","flight")))
     // println(solution.isValid("()[]{}"))
     // println(solution.removeElement(intArrayOf(3,2,2,3), 3))
     // println(solution.strStr("hello", "llo"))
-    println(solution.searchInsert2(intArrayOf(1,3,5,6,8,9,10), 2))
+    // println(solution.searchInsert2(intArrayOf(1,3,5,6,8,9,10), 2))
 }
