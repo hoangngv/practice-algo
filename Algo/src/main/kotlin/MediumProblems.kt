@@ -1,6 +1,4 @@
 import java.util.*
-import kotlin.math.abs
-import kotlin.math.min
 
 
 class MediumSolution {
@@ -191,11 +189,52 @@ class MediumSolution {
 
         return max
     }
+
+    /* 97. Interleaving String -> DP approach */
+    fun isInterleave(s1: String, s2: String, s3: String): Boolean {
+        if (s3.length != s1.length + s2.length) {
+            return false
+        }
+        val dp = Array(s1.length + 1) {
+            BooleanArray(
+                s2.length + 1
+            )
+        }
+        for (i in 0..s1.length) {
+            for (j in 0..s2.length) {
+                if (i == 0 && j == 0) {
+                    dp[i][j] = true
+                } else if (i == 0) {
+                    dp[i][j] = dp[i][j - 1] && s2[j - 1] == s3[i + j - 1]
+                } else if (j == 0) {
+                    dp[i][j] = dp[i - 1][j] && s1[i - 1] == s3[i + j - 1]
+                } else {
+                    dp[i][j] = dp[i - 1][j] && s1[i - 1] == s3[i + j - 1] || dp[i][j - 1] && s2[j - 1] == s3[i + j - 1]
+                }
+            }
+        }
+        return dp[s1.length][s2.length]
+    }
+
+    fun is_Interleave(s1: String, i: Int, s2: String, j: Int, res: String, s3: String): Boolean {
+        if (res == s3 && i == s1.length && j == s2.length) return true
+        var ans = false
+        if (i < s1.length) ans = ans or is_Interleave(s1, i + 1, s2, j, res + s1[i], s3)
+        if (j < s2.length) ans = ans or is_Interleave(s1, i, s2, j + 1, res + s2[j], s3)
+        return ans
+    }
+
+    fun isInterleaveUsingBruteForce(s1: String, s2: String, s3: String): Boolean {
+        return if (s1.length + s2.length != s3.length) {
+            false
+        } else is_Interleave(s1, 0, s2, 0, "", s3)
+    }
 }
 
 fun main(args: Array<String>) {
     val solution = MediumSolution()
-    println(solution.maximumElementAfterDecrementingAndRearranging(intArrayOf(75,98,9)))
+    println(solution.isInterleave("aabcc", "dbbca", "aadbbcbcac"))
+    // println(solution.maximumElementAfterDecrementingAndRearranging(intArrayOf(75,98,9)))
     // println(solution.minDifference(intArrayOf(1,5,0,10,14)))
     // println(solution.largestNumber(nums = intArrayOf(999999991,9)))
     // println(solution.intToRoman(1994))
