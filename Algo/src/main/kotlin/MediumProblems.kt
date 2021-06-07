@@ -229,11 +229,36 @@ class MediumSolution {
             false
         } else is_Interleave(s1, 0, s2, 0, "", s3)
     }
+
+    /* 50. Pow(x, n) */
+    fun myPow(x: Double, n: Int): Double {
+        if (n == 0) return 1.0
+        if (n == 1) return x
+        if (n == -1) return 1 / x
+
+        return if (n < 0) {
+            val pow = myPow(x, n/2)
+            if (Math.abs(n) % 2 == 0) {
+                pow*pow
+            } else {
+                1/x*pow*pow
+            }
+        } else {
+            val temp = myPow(x, n/2)
+            if (n % 2 == 0) {
+                temp*temp
+            } else {
+                temp*temp*x
+            }
+        }
+    }
 }
 
 fun main(args: Array<String>) {
     val solution = MediumSolution()
-    println(solution.isInterleave("aabcc", "dbbca", "aadbbcbcac"))
+    // println(solution.myPow(2.00000, -3))
+    // println(solution.maximumElementAfterDecrementingAndRearranging(intArrayOf(75,98,9)))
+    // println(solution.isInterleave("aabcc", "dbbca", "aadbbcbcac"))
     // println(solution.maximumElementAfterDecrementingAndRearranging(intArrayOf(75,98,9)))
     // println(solution.minDifference(intArrayOf(1,5,0,10,14)))
     // println(solution.largestNumber(nums = intArrayOf(999999991,9)))

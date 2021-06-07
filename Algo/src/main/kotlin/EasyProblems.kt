@@ -233,11 +233,95 @@ class EasySolution {
         }
         return i+1
     }
+
+    /* 69. Sqrt(x) */
+    fun mySqrt(x: Int): Int {
+        if (x < 2) return x
+
+        var left: Long = 2
+        var right: Long = (x/2).toLong()
+
+        while (left <= right) {
+            val middle = left + (right-left)/2
+            val pow = middle*middle
+
+            if (pow < x) left = middle+1
+            else if (pow > x) right = middle-1
+            else return middle.toInt()
+        }
+
+        return right.toInt()
+    }
+
+    /* 367. Valid Perfect Square */
+    fun isPerfectSquare(num: Int): Boolean {
+        if (num < 2) return true
+        for (i in 2..num/2) {
+            if (i*i == num) return true
+        }
+        return false
+    }
+
+    /* 88. Merge Sorted Array */
+    fun merge(nums1: IntArray, m: Int, nums2: IntArray, n: Int): Unit {
+        if (m == 0) {
+            for (i in 0 until n) {
+                nums1[i] = nums2[i]
+            }
+            return
+        }
+
+        if (n == 0) return
+
+        val tempArray = IntArray(m) // temp array to store nums1 elements
+        for (i in 0 until m) {
+            tempArray[i] = nums1[i]
+        }
+
+        var tempArrayIdx = 0
+        var nums1Idx = 0
+        var nums2Idx = 0
+
+        // merge
+        while (tempArrayIdx < m && nums2Idx < n) {
+            if (tempArray[tempArrayIdx] <= nums2[nums2Idx]) {
+                nums1[nums1Idx] = tempArray[tempArrayIdx]
+                tempArrayIdx++
+            } else {
+                nums1[nums1Idx] = nums2[nums2Idx]
+                nums2Idx++
+            }
+            nums1Idx++
+        }
+
+        while (tempArrayIdx < m) {
+            nums1[nums1Idx] = tempArray[tempArrayIdx]
+            nums1Idx++
+            tempArrayIdx++
+        }
+
+        while (nums2Idx < n) {
+            nums1[nums1Idx] = nums2[nums2Idx]
+            nums1Idx++
+            nums2Idx++
+        }
+    }
+
+    /* 977. Squares of a Sorted Array */
+    fun sortedSquares(nums: IntArray): IntArray {
+        for (i in nums.indices) {
+            nums[i] = nums[i]*nums[i]
+        }
+        Arrays.sort(nums)
+        return nums
+    }
 }
 
 fun main(args: Array<String>) {
     val solution = EasySolution()
-    println(solution.removeDuplicates(intArrayOf(0,0,1,1,1,2,2,3,3,4)))
+    println(solution.merge(intArrayOf(1,2,3,0,0,0), 3, intArrayOf(2,5,6), 3))
+    // println(solution.mySqrt(2147395599))
+    //println(solution.removeDuplicates(intArrayOf(0,0,1,1,1,2,2,3,3,4)))
     // println(solution.romanToInt("MCMXCIV"))
     // println(solution.isPalindrome(100))
     // println(solution.longestCommonPrefix(arrayOf("flower","flow","flight")))
