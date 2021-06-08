@@ -252,10 +252,90 @@ class MediumSolution {
             }
         }
     }
+
+    /* 287. Find the Duplicate Number */
+    fun findDuplicate(nums: IntArray): Int {
+        nums.sort()
+        for (i in 0..nums.size-2) {
+            if (nums[i] == nums[i+1]) return nums[i]
+        }
+        return -1
+    }
+
+    /* 1760. Minimum Limit of Balls in a Bag */
+    fun minimumSize(nums: IntArray, maxOperations: Int): Int {
+
+        return 0
+    }
+
+    /* 378. Kth Smallest Element in a Sorted Matrix */
+    fun kthSmallest(matrix: Array<IntArray>, k: Int): Int {
+        val numOfRows = matrix.size
+        val numOfColumns = matrix[0].size
+        if (numOfRows*numOfColumns == 1) return matrix[0][0]
+
+        val array = IntArray(k)
+        var idx = 0
+        for (i in matrix.indices) {
+            for (j in matrix[i].indices) {
+                array[idx] = matrix[i][j]
+                if (idx == k-1) break
+                else idx++
+            }
+        }
+        array.sort()
+
+        return array[k-1]
+
+        /*for (i in matrix.indices) {
+            for (j in matrix[0].indices) {
+                queue.add(matrix[i][j])
+                if (queue.size > k) queue.poll()
+            }
+        }
+
+        return queue.poll()*/
+    }
+
+    /* 1760. Minimum Limit of Balls in a Bag */
+    fun findMinimumSize(nums: IntArray, maxOperations: Int): Int {
+        Arrays.sort(nums)
+        var left = 1
+        var right = nums[nums.size-1]
+
+        while (left <= right) {
+            val mid = left + (right-left)/2
+            if (isValid(nums, mid, maxOperations)) {
+                right = mid-1
+            } else {
+                left = mid+1
+            }
+        }
+
+        return left
+    }
+
+    private fun isValid(nums: IntArray, maxPenalty: Int, maxOperations: Int): Boolean {
+        var numOperations = 0
+        val len = nums.size
+
+        for (i in len - 1 downTo 0) {
+            if (nums[i] > maxPenalty) {
+                numOperations += nums[i] / maxPenalty
+                if (nums[i] % maxPenalty == 0) numOperations--
+            } else {
+                break
+            }
+        }
+
+        return numOperations <= maxOperations
+    }
 }
 
 fun main(args: Array<String>) {
     val solution = MediumSolution()
+    println(solution.kthSmallest(arrayOf(intArrayOf(1,2), intArrayOf(1,3)), 2))
+    // println(solution.findDuplicate(intArrayOf(3,1,3,4,2)))
     // println(solution.myPow(2.00000, -3))
     // println(solution.maximumElementAfterDecrementingAndRearranging(intArrayOf(75,98,9)))
     // println(solution.isInterleave("aabcc", "dbbca", "aadbbcbcac"))
