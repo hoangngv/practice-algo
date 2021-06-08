@@ -252,10 +252,20 @@ class MediumSolution {
             }
         }
     }
+
+    /* 287. Find the Duplicate Number */
+    fun findDuplicate(nums: IntArray): Int {
+        nums.sort()
+        for (i in 0..nums.size-2) {
+            if (nums[i] == nums[i+1]) return nums[i]
+        }
+        return -1
+    }
 }
 
 fun main(args: Array<String>) {
     val solution = MediumSolution()
+    println(solution.findDuplicate(intArrayOf(3,1,3,4,2)))
     // println(solution.myPow(2.00000, -3))
     // println(solution.maximumElementAfterDecrementingAndRearranging(intArrayOf(75,98,9)))
     // println(solution.isInterleave("aabcc", "dbbca", "aadbbcbcac"))
