@@ -1,25 +1,4 @@
-package codility
-
-// Lesson 1: Iterations
-// BinaryGap -> Find the longest sequence of zeros in binary representation of an integer.
-// Below solution covered 100% test cases
-// optional: MinDistinct
-fun findBinaryGap(number: Int): Int {
-    val binaryString = Integer.toBinaryString(number)
-    var gap = 0
-    var tempGap = 0
-    var beginCounter = false
-    binaryString.forEachIndexed { index, char ->
-        if (char == '1') {
-            if (tempGap > gap) gap = tempGap
-            tempGap = 0
-            beginCounter = true
-        } else {
-            if (beginCounter) tempGap++
-        }
-    }
-    return gap
-}
+package codility.training
 
 // Lesson 2: Arrays
 // CyclicRotation - 100%
@@ -58,10 +37,9 @@ fun findUnpairedElement(array: IntArray): Int {
 }
 
 fun main() {
-//    print("Binary gap ->  ${findBinaryGap(number = 32)}") // Binary Gap
-//    val shiftedArray = rotateIntArray(array = intArrayOf(3, 8, 9, 7, 6), times = 3)
-//    for (number in shiftedArray) {
-//        println(number)
-//    }
+    val shiftedArray = rotateIntArray(array = intArrayOf(3, 8, 9, 7, 6), times = 3)
+    for (number in shiftedArray) {
+        println(number)
+    }
     print("Unpaired element = ${findUnpairedElement(array = intArrayOf(9, 9, 3))}")
 }
